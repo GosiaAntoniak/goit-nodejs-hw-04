@@ -1,25 +1,23 @@
-// const mongoose = require('mongoose');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 const uri = process.env.URI_DB;
 
 const db = mongoose.connect(uri, {
-    dbName: 'db-contacts',
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    dbName: 'db-contacts',
 });
 
+mongoose.set('strictQuery', true);
+
 mongoose.connection.on('connected', () => {
-    console.log('Database connection successful');
+    console.log('Mongoose connection to DB');
 });
 
 mongoose.connection.on('error', err => {
     console.log(`Mongoose connection error: ${err.message}`);
-    process.exit(1);
 });
-
-// disconnected
 
 process.on('SIGINT', async () => {
     await mongoose.connection.close();
